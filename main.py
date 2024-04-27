@@ -17,6 +17,10 @@ class Node:
         self.val = val
         self.neighbors = neighbors # if neighbors is not None else []
 
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
 
 
 def rightSideView(root: Optional[TreeNode]) -> List[int]: # Others' solution.Here root type is None or TreeNode
@@ -624,7 +628,7 @@ def generateParenthesis(n: int) -> List[str]:
     dfs(n, n, '')
     return result
 
-def exist(board: List[List[str]], word: str) -> bool:
+def exist(board: List[List[str]], word: str) -> bool: # My solution, almost correct , but not able to handle when two choices are all available, which one to choose
     find_word_list = []
     status = False
 
@@ -671,13 +675,161 @@ def exist(board: List[List[str]], word: str) -> bool:
     print('123')
     return status
 
+
+def exist(board: List[List[str]], word: str) -> bool: # others' solution
+    find_word_list = []
+    status = False
+
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+          if board[i][j] == word:
+             return True
+
+    def dfs(m, row, col, search_word):
+
+      if m == len(word):
+          find_word_list.append(search_word)
+          return
+      if board[row][col] == word[m]:
+          search_word = search_word+board[row][col]
+          board[row][col]='1'
+          if row-1 >= 0:
+              dfs(m+1, row-1, col, search_word)
+          if row+1 < len(board):
+              dfs(m+1, row+1, col, search_word)
+          if col-1 >= 0:
+              dfs(m+1, row, col-1, search_word)
+          if col+1 < len(board[0]):
+              dfs(m+1, row, col+1, search_word)
+      else:
+          for i in range(row, len(board)):
+              for j in range(col+1, len(board[0])):
+                  dfs(m, i, j, search_word)
+
+
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+          if board[i][j] == word:
+             return True
+          else:
+             if board[i][j] == word[0]:
+                 dfs(0, i, j, '')
+
+    for find_word in find_word_list:
+        if find_word == word:
+            status = True
+            break
+        else:
+            continue
+
+    return status
+
+
+def sortedArrayToBST(nums: List[int]) -> Optional[TreeNode]:
+    print('108. Convert Sorted Array to Binary Search Tree(Easy')
+    def buildTree(left,right):
+        if left > right:
+            return None
+        m = (left+right)//2
+        return TreeNode(nums[m],buildTree(left,m-1),buildTree(m+1,right))
+    return buildTree(0,len(nums)-1)
+
+def sortList(head: Optional[ListNode]) -> Optional[ListNode]:# Others' solution
+    print('148. Sort List(Medium)')
+
+    # cur = head
+    # cur = None      # Head didn't be changed
+
+    # cur = head
+    # tmp = cur.next
+    # cur = cur
+    # cur
+
+    # cur = head
+    # cur = head.next
+
+    # cur = head
+    # cur.next = None # Head's next will be changed to None
+
+    # cur = head.next
+    # cur.next = None # Head's next next will be changed to None
+
+    # cur = head.next
+    # cur = None  # Head's next won't be changed
+
+    '''  THis is developed by me, it's wrong, ignore it
+    # result = ListNode(0,head)
+    # cur = head
+    # compare = head
+    # while cur:  # clear now, has problem
+    #     if cur.val < compare.val:
+    #         tmp = result.next
+    #         result.next.val = cur.val
+    #         result.next.next=cur.next
+    #         result.next.next = tmp  # Here the problem is I use cur's reference to change next, so the cur's next will be reflected as well
+    #     cur=cur.next
+    '''
+
+    # 4213
+    def getMid(head):  # this is a good example of finding mid node of LinkedList, Important!Important!Important!Important!
+        slow, fast = head, head.next
+        while fast and fast.next: # always make sure three consecutive nodes are exist
+            slow =  slow.next
+            fast =  fast.next.next
+        return slow
+
+    def merge(left, right): # Understood, quick sort
+        tail =  dummy = ListNode()
+        while list1 and list2:
+            if list1.val < list2.val:
+                tail.next = list1
+                list1 = list1.next
+            else:
+                tail.next = list2
+                list2 = list2.next
+            tail = tail.next
+        if list1 :
+            tail.next = list1
+        if list2 :
+            tail.next = list2
+
+        return dummy.next
+
+
+    if not head or not head.next:
+        return head
+    left  =  head
+    mid = getMid(head)
+    right = mid.next
+    mid.next = None
+    left = sortList(left)
+    right = sortList(right)
+    print('123456')
+    return merge(left, right)
+
+def maxSubArray(nums: List[int]) -> int:
+    print('53. Maximum Subarray(Medium)')
+    sum = 0
+    subarray = []
+    def dfs(start, end, sum, subarray):
+        if sum+nums[start] > sum:
+            sum = sum+nums[start]
+            subarray.append(nums[start])
+            dfs(start+1, end, sum, subarray)
+        else:
+
+
+
+
+    dfs(0, len(nums)-1, sum, subarray)
+    return 0
+
 if __name__ == '__main__':
 
     '''
      Start from 2024-04-20  
      Binary Tree BFS
     '''
-
     # # 199. Binary Tree Right Side View(Medium)
     # treeNodeLeft = TreeNode(2,right=TreeNode(5))
     # treeNodeRight = TreeNode(3, right=TreeNode(4))
@@ -709,13 +861,13 @@ if __name__ == '__main__':
     # zigzagLevelOrder(treeNode)
 
 
-    # '''
-    #  Binary Search Tree
-    #  don't forget the feature of Binary Search Tree is that
-    #  for any root nodes,all left nodes should be less than roo node,
-    #  and each of right nodes should larger than roots, each the left nodes should less than roots，
-    #  Is kind of sorted tree
-    # '''
+    '''
+     Binary Search Tree
+     don't forget the feature of Binary Search Tree is that
+     for any root nodes,all left nodes should be less than roo node,
+     and each of right nodes should larger than roots, each the left nodes should less than roots，
+     Is kind of sorted tree
+    '''
     # # 530. Minimum Absolute Difference in BST(Easy)
     # # treeNodeLeft = TreeNode(2, left=TreeNode(1), right=TreeNode(3))
     # # treeNodeRight = TreeNode(6)
@@ -772,7 +924,7 @@ if __name__ == '__main__':
     # '''
     # isValidBST(treeNode)
 
-    # Graph General
+    '''Graph General'''
     # 200. Number of Islands(Medium)
     # grid = [
     #     ['1', '1', '1', '1', '0'],
@@ -858,10 +1010,10 @@ if __name__ == '__main__':
     # # prerequisites = [[0,1],[1,0]]
     # findOrder2(numCourses, prerequisites)
 
-    # Graph BFS
+    '''Graph BFS'''
     # 909. Snakes and Ladders(Medium) skipped
 
-    # # Backtracking
+    '''Backtracking'''
     # # 17. Letter Combinations of a Phone Number(Medium)
     # digits = "23"
     # letterCombinations(digits)
@@ -904,8 +1056,29 @@ if __name__ == '__main__':
     # board = [["a", "b"], ["c", "d"]]
     # word = "cdba"
 
-    board = [["C", "A", "A"], ["A", "A", "A"], ["B", "C", "D"]]
-    word = "AAB"
-    exist(board, word)
+    # board = [["C", "A", "A"], ["A", "A", "A"], ["B", "C", "D"]]
+    # word = "AAB"
+    # exist(board, word)
+    #
+
+    '''Divide & Conquer'''
+    # # 108. Convert Sorted Array to Binary Search Tree(Easy)
+    # nums = [-10, -3, 0, 5, 9]
+    # sortedArrayToBST(nums)
+
+    # # 148. Sort List(Medium)
+    # # 16,13,14,8,5,2,4  16:13  13:8  14:2  8:None => mid = 8
+    # # 16,13,14,8,5,2  16:13  13:8  14:2 => mid = 2
+    # head = ListNode(16,ListNode(13,ListNode(14,ListNode(8,ListNode(5,ListNode(2,ListNode(4,None)))))))
+    # sortList(head)
 
 
+    # 427. Construct Quad Tree(Medium) Skipped
+
+
+    '''Kadane's Algorithm
+       maximun sub array dynamic algorithm
+    '''
+    # 53. Maximum Subarray(Medium)
+    nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+    maxSubArray(nums)
