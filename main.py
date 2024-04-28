@@ -978,8 +978,47 @@ def searchInsert(nums: List[int], target: int) -> int:
 
     return start
 
-def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+def searchMatrix(matrix: List[List[int]], target: int) -> bool:
+    m = len(matrix)
+    n = len(matrix[0])
+    num = m*n
+
+    start = 0
+    end = num
+    while start < end:
+       mid = (start + end) // 2
+       row = mid // n
+       col = mid % n
+       if matrix[row][col] == target:
+           return True
+       elif matrix[row][col] < target:
+           start = row*n+col+1
+       else:
+           end = row*n+col
     return False
+
+def findPeakElement(nums: List[int]) -> int: # Others' solution
+    print('162. Find Peak Element(Medium)')
+    l = 0
+    r = len(nums)-1
+
+    while l <= r:
+        '''if we find any possible number whose value is larger than the neighbor, 
+           we can guarantee that the other side no matter is ascending or decending, 
+           there should be exist a value can be a peak point
+           Always to find the next possible peak node
+        '''
+        m = (l+r)//2
+        # There is another way to calculate out the middle point
+        # m = l + ((r - l) // 2)
+
+        if nums[m] >= nums[m+1]:
+            r = m
+        else:
+            l = m + 1
+    return l
+
+
 
 if __name__ == '__main__':
     '''
@@ -1268,15 +1307,23 @@ if __name__ == '__main__':
     # nums = [1, -2, 3, -2]
     # maxSubarraySumCircular2(nums)
 
-    # Binary Search
-    # 35. Search Insert Position(Easy)
-    nums = [1, 3, 5, 6]
-    target = 7
-    # abc = len(nums)//2  # Floor Division : Rounds the result down to the nearest whole number
-    searchInsert(nums, target)
+    # # Binary Search
+    # # 35. Search Insert Position(Easy)
+    # nums = [1, 3, 5, 6]
+    # target = 7
+    # # abc = len(nums)//2  # Floor Division : Rounds the result down to the nearest whole number
+    # searchInsert(nums, target)
 
-    # 74. Search a 2D Matrix(Medium)
-    matrix = [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], target = 3
+    # # 74. Search a 2D Matrix(Medium)
+    # matrix = [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]]
+    # target = 3
+    # searchMatrix(matrix, target)
+
+    # 162. Find Peak Element(Medium)
+    # nums = [1, 2, 3, 1]
+
+    nums = [1, 2, 1, 3, 5, 6, 4]
+    findPeakElement(nums)
 
 
 
