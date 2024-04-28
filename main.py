@@ -1,6 +1,8 @@
 import collections
 from typing import List
 from typing import Optional
+import math
+
 
 
 # Definition for a binary tree node.
@@ -891,21 +893,93 @@ def sortList(head: Optional[ListNode]) -> Optional[ListNode]:  # Others' solutio
     return merge(left, right)
 
 
-def maxSubArray(nums: List[int]) -> int:
+def maxSubArray(nums: List[int]) -> int: # Others' solution
     print('53. Maximum Subarray(Medium)')
-    sum = 0
-    subarray = []
+    result_sum = -math.inf
+    pre_sum = 0
 
-    def dfs(start, end, sum, subarray):
-        if sum + nums[start] > sum:
-            sum = sum + nums[start]
-            subarray.append(nums[start])
-            dfs(start + 1, end, sum, subarray)
+    for num in nums:
+        pre_sum = max(num, pre_sum + num)  # Check if current number larger than previous total sum number
+        result_sum = max(result_sum, pre_sum)
+
+    return result_sum
+
+def maxSubArray2(nums: List[int]) -> int: # Others' solution 2
+    print('53. Maximum Subarray(Medium)')
+    dp = [0] * len(nums)
+
+    dp[0] = nums[0]
+    for i in range(1, len(nums)):
+        dp[i] = max(nums[i], dp[i - 1] + nums[i])
+
+    return max(dp)
+
+def maxSubarraySumCircular(nums: List[int]) -> int:  # MY solution is correct , but limited time is exceeded
+    print('918. Maximum Sum Circular Subarray(Medium)')
+    result_sum = -math.inf
+
+    nums_len = len(nums)
+    for i in range(nums_len):
+        pre_sum = 0
+        for j in range(i, i + nums_len):
+            if j >= nums_len:
+                longer_pos = j%nums_len
+                pre_sum = max(nums[longer_pos], pre_sum + nums[longer_pos])
+            else:
+                pre_sum = max(nums[j], pre_sum + nums[j])
+            result_sum = max(result_sum, pre_sum)
+    return result_sum
+
+def maxSubarraySumCircular2(nums: List[int]) -> int:  # Others' solution
+    print('918. Maximum Sum Circular Subarray(Medium)')
+    totalSum = 0
+    currMaxSum = 0
+    currMinSum = 0
+    globalMaxSum = -math.inf
+    globalMinSum = math.inf
+
+    for num in nums:
+        totalSum += num
+        currMaxSum = max(currMaxSum + num, num)
+        globalMaxSum = max(globalMaxSum, currMaxSum)
+
+        currMinSum = min(currMinSum + num, num)
+        globalMinSum = min(globalMinSum, currMinSum)
+
+    return globalMaxSum if globalMaxSum < 0 else max(globalMaxSum, totalSum - globalMinSum)  # it's the most difficult part of this algorithm
+
+def searchInsert(nums: List[int], target: int) -> int:
+    print('35. Search Insert Position(Easy)')
+    nums_length = len(nums)
+    start  = 0
+    end = nums_length
+
+    while start < end:
+        mid_pos = (start + end) // 2
+        if nums[mid_pos] > target:
+            end = mid_pos
+        elif nums[mid_pos] == target:
+            return mid_pos
         else:
+            start = mid_pos+1
 
-    dfs(0, len(nums) - 1, sum, subarray)
-    return 0
+    '''
+    def binary_search(start, end):
+        mid_pos = (end - start) // 2
+        if target > nums[mid_pos]:
+            binary_search(mid_pos+1, end)
+        elif target == nums[mid_pos]:
+            return mid_pos
+        else:
+            binary_search(start, mid_pos - 1)
 
+    return binary_search(0, nums_length-1)
+    '''
+
+    return start
+
+def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+    return False
 
 if __name__ == '__main__':
     '''
@@ -1172,9 +1246,38 @@ if __name__ == '__main__':
 
     # 427. Construct Quad Tree(Medium) Skipped
 
-    '''Kadane's Algorithm
-       maximun sub array dynamic algorithm
-    '''
-    # 53. Maximum Subarray(Medium)
-    nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
-    maxSubArray(nums)
+    # '''Kadane's Algorithm
+    #    maximun sub array dynamic algorithm
+    # '''
+    # # 53. Maximum Subarray(Medium)
+    # nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+    # maxSubArray2(nums)
+
+    # # 918. Maximum Sum Circular Subarray(Medium')
+    # '''
+    # Given a circular integer array nums of length n, return the maximum possible sum of a non-empty subarray of nums.
+    #
+    # A circular array means the end of the array connects to the beginning of the array.
+    #
+    # Formally, the next element of nums[i] is nums[(i + 1) % n] and the previous element of nums[i] is nums[(i - 1 + n) % n].
+    #
+    # A subarray may only include each element of the fixed buffer nums at most once.
+    #
+    # Formally, for a subarray nums[i], nums[i + 1], ..., nums[j], there does not exist i <= k1, k2 <= j with k1 % n == k2 % n.
+    # '''
+    # nums = [1, -2, 3, -2]
+    # maxSubarraySumCircular2(nums)
+
+    # Binary Search
+    # 35. Search Insert Position(Easy)
+    nums = [1, 3, 5, 6]
+    target = 7
+    # abc = len(nums)//2  # Floor Division : Rounds the result down to the nearest whole number
+    searchInsert(nums, target)
+
+    # 74. Search a 2D Matrix(Medium)
+    matrix = [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], target = 3
+
+
+
+
