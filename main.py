@@ -14,9 +14,9 @@ class TreeNode:
 
 
 class Node:
-    def __init__(self, val=0, neighbors=None):
+    def __init__(self, val = 0, neighbors = None):
         self.val = val
-        self.neighbors = neighbors  # if neighbors is not None else []
+        self.neighbors = neighbors # if neighbors is not None else []
 
 
 class ListNode:
@@ -25,23 +25,22 @@ class ListNode:
         self.next = next
 
 
-def rightSideView(root: Optional[TreeNode]) -> List[int]:  # Others' solution.Here root type is None or TreeNode
+def rightSideView(root: Optional[TreeNode]) -> List[int]: # Others' solution.Here root type is None or TreeNode
     print('199. Binary Tree Right Side View(Medium)')
     result = []
     if not root:
-        return result
-    q = collections.deque([root])  # q only store elements layer by layer
+       return result
+    q=collections.deque([root]) #q only store elements layer by layer
     while q:
-        length = len(
-            q)  # here we wanna fixed the every layer size of elment when every time loop on the first element in each layer
+        length = len(q)# here we wanna fixed the every layer size of elment when every time loop on the first element in each layer
         for i in range(length):
-            root = q.popleft()  # here we wanna always find the current treenode at root
-            if i == length - 1:
+            root=q.popleft()# here we wanna always find the current treenode at root
+            if i==length-1:
                 result.append(root.val)
             if root.left:
-                q.append(root.left)
+               q.append(root.left)
             if root.right:
-                q.append(root.right)
+               q.append(root.right)
     return result
 
 
@@ -56,7 +55,7 @@ def averageOfLevels(root: Optional[TreeNode]) -> List[float]:
         count = 0
         for i in range(length):
             root = q.popleft()
-            count += root.val
+            count +=root.val
             if root.left:
                 q.append(root.left)
             if root.right:
@@ -1018,7 +1017,16 @@ def findPeakElement(nums: List[int]) -> int: # Others' solution
             l = m + 1
     return l
 
+def iterativeSearch(root, key) -> bool:
+    while root:
+        if root.val == key:
+            return true
+        elif root.val < key:
+            root  = root.right
+        else:
+            root = root.left
 
+    return False
 
 if __name__ == '__main__':
     '''
@@ -1063,6 +1071,15 @@ if __name__ == '__main__':
      and each of right nodes should larger than roots, each the left nodes should less than roots，
      Is kind of sorted tree
     '''
+
+    # Geeksforgeeks
+    # Iterative searching in Binary Search Tree
+    treeNodeLeft = TreeNode(2, left=TreeNode(1), right=TreeNode(3))
+    treeNodeRight = TreeNode(6)
+    treeNode = TreeNode(4,treeNodeLeft,treeNodeRight)
+    iterativeSearch(treeNode, 5)
+
+
     # # 530. Minimum Absolute Difference in BST(Easy)
     # # treeNodeLeft = TreeNode(2, left=TreeNode(1), right=TreeNode(3))
     # # treeNodeRight = TreeNode(6)
@@ -1319,11 +1336,11 @@ if __name__ == '__main__':
     # target = 3
     # searchMatrix(matrix, target)
 
-    # 162. Find Peak Element(Medium)
-    # nums = [1, 2, 3, 1]
-
-    nums = [1, 2, 1, 3, 5, 6, 4]
-    findPeakElement(nums)
+    # # 162. Find Peak Element(Medium)
+    # # nums = [1, 2, 3, 1]
+    #
+    # nums = [1, 2, 1, 3, 5, 6, 4]
+    # findPeakElement(nums)
 
 
 
