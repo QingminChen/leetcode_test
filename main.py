@@ -4,6 +4,8 @@ from typing import Optional
 import math
 
 
+max = -math.inf # infinite
+min = math.inf
 
 # Definition for a binary tree node.
 class TreeNode:
@@ -46,6 +48,7 @@ def rightSideView(root: Optional[TreeNode]) -> List[int]: # Others' solution.Her
 
 def averageOfLevels(root: Optional[TreeNode]) -> List[float]:
     print('637. Average of Levels in Binary Tree(Easy)')
+    '''Calculate the average value of each of layer'''
     result = []
     if not root:
         return result
@@ -116,7 +119,7 @@ def zigzagLevelOrder(root: Optional[TreeNode]) -> List[List[int]]:  # 之字替�
 
 
 def getMinimumDifference(root: Optional[
-    TreeNode]) -> int:  # my solution is wrong, In general, two nodes cannot have the same value in the binary search tree
+    TreeNode]) -> int:  # my solution is wrong, skipped it. In general, two nodes cannot have the same value in the binary search tree
     print('530. Minimum Absolute Difference in BST(Easy)')
     node_list = []
     q = collections.deque([])
@@ -169,6 +172,63 @@ def postorder(postord: List[int], root: TreeNode) -> None:  # left->right->root 
     postorder(postord, root.left)
     postorder(postord, root.right)
     postord.append(root.val)
+
+def buildSBT_inorder(inord:List[int], cur_root: TreeNode, root: TreeNode) -> TreeNode: # Traversal 遍历 SBT=Special Binary Tree：root‘s value larger than any of children nodes
+    print('Geeksforgeeks Construct Special Binary Tree from given Inorder traversal')
+    '''On hold , skip it'''
+    if not inorder:
+        return None
+    max = -math.inf
+    max_idx = -1
+    for idx, elem in enumerate(inord):
+        if elem > max:
+            max = elem
+            max_idx = idx
+    root.val = max
+
+    # # If this is the only element in
+    # # inorder[start..end], then return it
+    # if start == end:
+    #     return root
+    #
+    #     # Using index in Inorder traversal,
+    # # construct left and right subtress
+    # root.left = buildTree(inorder, start, i - 1)
+    # root.right = buildTree(inorder, i + 1, end)
+    #
+    # return root
+
+    root.left = buildSBT_inorder(inord[0:max_idx], treeNode, root)
+
+    # if not cur_root.left:
+    #    treeNode = TreeNode(0, None, None)
+    #    root.left = treeNode
+    #    buildSBT_inorder(inord[0:max_idx],treeNode, root)
+    #    print('123')
+    buildSBT_inorder(inord[max_idx+1,len(inord)], root)
+    # root.
+
+def buildTree(preorder: List[int], inorder: List[int]) -> Optional[TreeNode]: # here it take use of map and how to skip the numbers of children nodes to find next root in preorder list and even we take use of recursive, but the reference of root are always same, catch all the historical added nodes
+    print('105. Construct Binary Tree from Preorder and Inorder Traversal(Medium)')
+
+    map = collections.defaultdict()
+    for inordidx, inorderval in enumerate(inorder):
+        map[inorderval] = inordidx
+
+    def helper(preIndexStartSubTree: int, inStart: int, inEnd: int, preorder: List[int], inorder: List[int], map: dict) ->TreeNode:
+       if preIndexStartSubTree > (len(preorder) - 1) or inStart > inEnd :
+          return None
+       root = TreeNode(preorder[preIndexStartSubTree])
+       if inStart == inEnd:
+          return root;
+       inRootIndex = map.get(root.val);
+       root.left = helper(preIndexStartSubTree + 1, inStart, inRootIndex - 1, preorder, inorder, map);
+       root.right = helper(preIndexStartSubTree + (inRootIndex - 1 - inStart + 1) + 1, inRootIndex + 1, inEnd, preorder,inorder, map);
+
+       return root;
+
+    return helper(0, 0, len(inorder) - 1, preorder, inorder, map);
+
 
 
 def getMinimumDifferenceOthers(root: Optional[
@@ -1028,6 +1088,90 @@ def iterativeSearch(root, key) -> bool:
 
     return False
 
+def isPalindrome(x: int) -> bool:
+    print('9. Palindrome Number(Easy)')
+    x_str = str(x)
+    x_str_len = len(x_str)
+    status = False
+    if x_str_len==1:
+        return True
+    for i in range(x_str_len):
+        if i<x_str_len-1-i:
+          if x_str[i] == x_str[x_str_len-1-i]:
+            status = True
+            continue
+          else:
+            status = False
+            break
+        else:
+          break
+    return status
+
+def countSubstrings(s: str) -> int:  # my solution not efficient
+    print('647. Palindromic Substrings')
+    ch_list = list(s)
+    print('1234')
+    restult = []
+    tmp_str=''
+    # if ch_list[i]
+    def find_substring_salindromic(domain_index, ch_list, restult, tmp_str):
+        if len(tmp_str) == 1:
+            restult.append(tmp_str)
+            if domain_index+1<len(ch_list):
+              tmp_str = tmp_str + ch_list[domain_index + 1]
+              find_substring_salindromic(domain_index+1, ch_list, restult, tmp_str)
+              print('123')
+            else:
+              return restult
+        elif len(tmp_str)>1:
+            tmp_str_len = len(tmp_str)
+            status = False
+            for i in range(tmp_str_len):
+                if i < tmp_str_len - 1 - i:
+                    if tmp_str[i] == tmp_str[tmp_str_len - 1 - i]:
+                        status = True
+                        continue
+                    else:
+                        status = False
+                        break
+                else:
+                    break
+            if status:
+                restult.append(tmp_str)
+                if domain_index + 1 < len(ch_list):
+                    tmp_str = tmp_str + ch_list[domain_index + 1]
+                    find_substring_salindromic(domain_index + 1, ch_list, restult, tmp_str)
+                else:
+                    return restult
+            else:
+                return
+        else:
+            find_substring_salindromic(domain_index+1, ch_list, restult, ch_list[domain_index+1])
+
+    find_substring_salindromic(-1, ch_list, restult, tmp_str)
+
+def countSubstrings2(s: str) -> int: # Others' solution
+    res = 0
+    result = []
+
+    def count_tmp(l, r, s):
+        tmp_res = 0
+        while l>=0 and r<len(s) and s[l] == s[r]:
+            tmp_res +=1
+            l = l-1
+            r = r+1
+        return tmp_res
+
+    for i in range(len(s)):
+       res = res + count_tmp(i,i,s)
+       if i+1<len(s):
+         res = res + count_tmp(i, i+1, s)
+       print('123')
+    return res
+
+
+
+
 if __name__ == '__main__':
     '''
      Start from 2024-04-20  
@@ -1064,6 +1208,7 @@ if __name__ == '__main__':
     # treeNode = TreeNode(3,treeNodeLeft,treeNodeRight)
     # zigzagLevelOrder(treeNode)
 
+
     '''
      Binary Search Tree
      don't forget the feature of Binary Search Tree is that
@@ -1072,12 +1217,12 @@ if __name__ == '__main__':
      Is kind of sorted tree
     '''
 
-    # Geeksforgeeks
-    # Iterative searching in Binary Search Tree
-    treeNodeLeft = TreeNode(2, left=TreeNode(1), right=TreeNode(3))
-    treeNodeRight = TreeNode(6)
-    treeNode = TreeNode(4,treeNodeLeft,treeNodeRight)
-    iterativeSearch(treeNode, 5)
+    # # Geeksforgeeks
+    # # Iterative searching in Binary Search Tree
+    # treeNodeLeft = TreeNode(2, left=TreeNode(1), right=TreeNode(3))
+    # treeNodeRight = TreeNode(6)
+    # treeNode = TreeNode(4,treeNodeLeft,treeNodeRight)
+    # iterativeSearch(treeNode, 5)
 
 
     # # 530. Minimum Absolute Difference in BST(Easy)
@@ -1300,7 +1445,7 @@ if __name__ == '__main__':
     # head = ListNode(16,ListNode(13,ListNode(14,ListNode(8,ListNode(5,ListNode(2,ListNode(4,None)))))))
     # sortList(head)
 
-    # 427. Construct Quad Tree(Medium) Skipped
+    # # 427. Construct Quad Tree(Medium) Skipped
 
     # '''Kadane's Algorithm
     #    maximun sub array dynamic algorithm
@@ -1341,6 +1486,26 @@ if __name__ == '__main__':
     #
     # nums = [1, 2, 1, 3, 5, 6, 4]
     # findPeakElement(nums)
+
+    # # 9. Palindrome Number(Easy)
+    # x = 121
+    # isPalindrome(x)
+
+    # # 647. Palindromic Substrings
+    # s = "aaab"
+    # countSubstrings2(s)
+
+    # # Geeksforgeeks Construct Special Binary Tree from given Inorder traversal, skipped it
+    # inorder = [5, 10, 40, 30, 28]
+    # treeNode = TreeNode(0,left = None, right = None)
+    # curNode = TreeNode(0,left = None, right = None)
+    # buildSBT_inorder(inorder,curNode,treeNode)
+
+    # 105. Construct Binary Tree from Preorder and Inorder Traversal(Medium)
+    preorder = [3, 9, 20, 15, 7]
+    inorder = [9, 3, 15, 20, 7]
+    buildTree(preorder, inorder)
+
 
 
 
