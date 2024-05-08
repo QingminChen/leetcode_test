@@ -198,7 +198,7 @@ def buildSBT_inorder(inord:List[int], cur_root: TreeNode, root: TreeNode) -> Tre
     #
     # return root
 
-    root.left = buildSBT_inorder(inord[0:max_idx], treeNode, root)
+    root.left = buildSBT_inorder(inord[0:max_idx], cur_root, root)
 
     # if not cur_root.left:
     #    treeNode = TreeNode(0, None, None)
@@ -1080,7 +1080,7 @@ def findPeakElement(nums: List[int]) -> int: # Others' solution
 def iterativeSearch(root, key) -> bool:
     while root:
         if root.val == key:
-            return true
+            return True
         elif root.val < key:
             root  = root.right
         else:
