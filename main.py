@@ -1170,6 +1170,40 @@ def countSubstrings2(s: str) -> int: # Others' solution
     return res
 
 
+class Node2:
+    def __init__(self, val: int = 0, left: 'Node2' = None, right: 'Node2' = None, next: 'Node2' = None): # Here we use single quote to around self define type for annotations
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+def connect(root: 'Node2') -> 'Node2':
+
+    if not root:
+        return None
+    q = collections.deque([root])
+    while q:
+        pre = None
+        length = len(q)
+        # tmp_q = q
+        for i in range(length):
+            cur = q.popleft()
+            if i == length-1:
+                if pre:
+                    pre.next = cur
+                cur.next = None
+            if i == 0:
+                pre = cur
+            if (i!=length-1 and i!=0):
+                pre.next=cur
+                pre = cur
+            if cur.left:
+                q.append(cur.left)
+            if cur.right:
+                q.append(cur.right)
+
+    return root
+
+
 
 
 if __name__ == '__main__':
@@ -1501,11 +1535,20 @@ if __name__ == '__main__':
     # curNode = TreeNode(0,left = None, right = None)
     # buildSBT_inorder(inorder,curNode,treeNode)
 
-    # 105. Construct Binary Tree from Preorder and Inorder Traversal(Medium)
-    preorder = [3, 9, 20, 15, 7]
-    inorder = [9, 3, 15, 20, 7]
-    buildTree(preorder, inorder)
+    # # 105. Construct Binary Tree from Preorder and Inorder Traversal(Medium)
+    # preorder = [3, 9, 20, 15, 7]
+    # inorder = [9, 3, 15, 20, 7]
+    # buildTree(preorder, inorder)
 
+    # 117. Populating Next Right Pointers in Each Node II(Medium)
+    # root = [1, 2, 3, 4, 5, null, 7]
+    nodeFour = Node2(4)
+    nodeFive = Node2(5)
+    nodeSeven = Node2(7)
+    nodeThree = Node2(3,None,nodeSeven)
+    nodeTwo = Node2(2,nodeFour,nodeFive)
+    root = Node2(1, nodeTwo, nodeThree)
+    connect(root)
 
 
 
