@@ -1169,7 +1169,20 @@ def countSubstrings2(s: str) -> int: # Others' solution
        print('123')
     return res
 
-
+def search(nums: List[int], target: int) -> int:
+    print('33. Search in Rotated Sorted Array')
+    # nums = [4, 5, 6, 7, 0, 1, 2] 7012456
+    l = 0
+    r = len(nums)-1
+    while l < r:
+      mid = (l + r) // 2  # Double Slash produces integer
+      if nums[mid] < target :
+          l = mid+1
+      elif nums[mid] == target:
+          return mid
+      else:
+          r = mid-1
+    return 0                                               
 class Node2:
     def __init__(self, val: int = 0, left: 'Node2' = None, right: 'Node2' = None, next: 'Node2' = None): # Here we use single quote to around self define type for annotations
         self.val = val
@@ -1540,6 +1553,11 @@ if __name__ == '__main__':
     # inorder = [9, 3, 15, 20, 7]
     # buildTree(preorder, inorder)
 
+    # # 33. Search in Rotated Sorted Array
+    # nums = [4, 5, 6, 7, 0, 1, 2]
+    # target = 3
+    # search(nums, target)
+    
     # 117. Populating Next Right Pointers in Each Node II(Medium)
     # root = [1, 2, 3, 4, 5, null, 7]
     nodeFour = Node2(4)
