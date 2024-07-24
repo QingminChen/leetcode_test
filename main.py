@@ -1558,15 +1558,15 @@ if __name__ == '__main__':
     # target = 3
     # search(nums, target)
     
-    # 117. Populating Next Right Pointers in Each Node II(Medium)
-    # root = [1, 2, 3, 4, 5, null, 7]
-    nodeFour = Node2(4)
-    nodeFive = Node2(5)
-    nodeSeven = Node2(7)
-    nodeThree = Node2(3,None,nodeSeven)
-    nodeTwo = Node2(2,nodeFour,nodeFive)
-    root = Node2(1, nodeTwo, nodeThree)
-    connect(root)
+    # # 117. Populating Next Right Pointers in Each Node II(Medium)
+    # # root = [1, 2, 3, 4, 5, null, 7]
+    # nodeFour = Node2(4)
+    # nodeFive = Node2(5)
+    # nodeSeven = Node2(7)
+    # nodeThree = Node2(3,None,nodeSeven)
+    # nodeTwo = Node2(2,nodeFour,nodeFive)
+    # root = Node2(1, nodeTwo, nodeThree)
+    # connect(root)
 
 
 
