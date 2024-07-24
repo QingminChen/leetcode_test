@@ -1216,7 +1216,34 @@ def connect(root: 'Node2') -> 'Node2':
 
     return root
 
+def flatten(root: Optional[TreeNode]) -> None:
+    if root is None:
+        return
+    cur = root
+    q = collections.deque()
+    def pre_order(cur):
+        q.append(cur.right)
+        cur.right = cur.left
+        tmp = cur.left
+        cur.left = None
+        return tmp
+    while cur.left:
+        cur = pre_order(cur)
+        print("123")
 
+    while q :
+        latest_right = q.pop()
+        cur.right = latest_right
+        cur = cur.right
+        print("456")
+
+
+# def preorder(preord: List[int], root: TreeNode) -> None:  # root->left->right 前序
+#     if root is None:
+#         return
+#     preord.append(root.val)
+#     preorder(preord, root.left)
+#     preorder(preord, root.right)
 
 
 if __name__ == '__main__':
@@ -1567,6 +1594,16 @@ if __name__ == '__main__':
     # nodeTwo = Node2(2,nodeFour,nodeFive)
     # root = Node2(1, nodeTwo, nodeThree)
     # connect(root)
+
+    # 114. Flatten Binary Tree to Linked List
+    # root = [1, 2, 5, 3, 4, null, 6]
+    nodeFour = TreeNode(4)
+    nodeSix = TreeNode(6)
+    nodeThree = TreeNode(3)
+    nodeTwo = TreeNode(2, nodeThree, nodeFour)
+    nodeFive = TreeNode(5, None, nodeSix)
+    root = TreeNode(1, nodeTwo, nodeFive)
+    flatten(root)
 
 
 
