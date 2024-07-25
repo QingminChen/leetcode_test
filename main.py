@@ -1222,10 +1222,13 @@ def flatten(root: Optional[TreeNode]) -> None:
     cur = root
     q = collections.deque()
     def pre_order(cur):
-        q.append(cur.right)
-        cur.right = cur.left
-        tmp = cur.left
-        cur.left = None
+        tmp = None
+        if cur.right:
+           q.append(cur.right)
+        if cur.left:
+           cur.right = cur.left
+           tmp = cur.left
+           cur.left = None
         return tmp
     while cur.left:
         cur = pre_order(cur)
@@ -1234,7 +1237,10 @@ def flatten(root: Optional[TreeNode]) -> None:
     while q :
         latest_right = q.pop()
         cur.right = latest_right
-        cur = cur.right
+        cur = latest_right
+        pre_order(cur)
+        # cur.right = latest_right
+        # cur = cur.right
         print("456")
 
 
