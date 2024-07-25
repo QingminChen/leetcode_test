@@ -1222,27 +1222,52 @@ def flatten(root: Optional[TreeNode]) -> None:
     cur = root
     q = collections.deque()
     def pre_order(cur):
-        tmp = None
-        if cur.right:
-           q.append(cur.right)
-        if cur.left:
-           cur.right = cur.left
-           tmp = cur.left
-           cur.left = None
+        tmp = cur
+        if not cur.left and cur.right:
+            print("nothing")
+            tmp = cur.right
+        elif cur.left and cur.right:
+            q.append(cur.right)
+            cur.right = cur.left
+            tmp = cur.left
+            cur.left = None
+        elif cur.left and not cur.right:
+            cur.right = cur.left
+            tmp = cur.left
+            cur.left = None
+        else:
+            tmp = cur
         return tmp
-    while cur.left:
-        cur = pre_order(cur)
-        print("123")
 
-    while q :
-        latest_right = q.pop()
-        cur.right = latest_right
-        cur = latest_right
-        pre_order(cur)
-        # cur.right = latest_right
-        # cur = cur.right
-        print("456")
+    while cur.left or cur.right or q:
+        if cur.left:
+            while cur.left:
+                cur = pre_order(cur)
+                print("123")
+        if cur.right:
+            q.append(cur.right)
+        if q:
+            latest_right = q.pop()
+            cur.right = latest_right
+            cur = latest_right
+            cur = pre_order(cur)
+            print("456")
 
+    # if cur.left:
+    #   while cur.left:
+    #     cur = pre_order(cur)
+    #     print("123")
+    # elif cur.right:
+    #     q.append(cur.right)
+    # else:
+    #     return
+    # while q :
+    #     latest_right = q.pop()
+    #     cur.right = latest_right
+    #     cur = latest_right
+    #     cur = pre_order(cur)
+    #     print("456")
+    print("789")
 
 # def preorder(preord: List[int], root: TreeNode) -> None:  # root->left->right 前序
 #     if root is None:
@@ -1602,13 +1627,34 @@ if __name__ == '__main__':
     # connect(root)
 
     # 114. Flatten Binary Tree to Linked List
-    # root = [1, 2, 5, 3, 4, null, 6]
-    nodeFour = TreeNode(4)
-    nodeSix = TreeNode(6)
-    nodeThree = TreeNode(3)
-    nodeTwo = TreeNode(2, nodeThree, nodeFour)
-    nodeFive = TreeNode(5, None, nodeSix)
-    root = TreeNode(1, nodeTwo, nodeFive)
+    # # root = [1, 2, 5, 3, 4, null, 6]
+    # nodeFour = TreeNode(4)
+    # nodeSix = TreeNode(6)
+    # nodeThree = TreeNode(3)
+    # nodeTwo = TreeNode(2, nodeThree, nodeFour)
+    # nodeFive = TreeNode(5, None, nodeSix)
+    # root = TreeNode(1, nodeTwo, nodeFive)
+
+    # # root = [1, null, 2, 3]
+    # nodeThree = TreeNode(3)
+    # nodeTwo = TreeNode(2,nodeThree,None)
+    # root = TreeNode(1,None,nodeTwo)
+
+    # # root = [1, null, 3, 2, 4]
+    # nodeTwo = TreeNode(2)
+    # nodeFour = TreeNode(4)
+    # nodeThree = TreeNode(3,nodeTwo,nodeFour)
+    # root = TreeNode(1,None, nodeThree)
+
+    # # root = [1, null, 4, 3, null, 2]
+    # nodeTwo = TreeNode(2)
+    # nodeThree = TreeNode(3, nodeTwo,None)
+    # nodeFour = TreeNode(4,nodeThree,None)
+    # root  = TreeNode(1, None, nodeFour)
+
+    # root = [1, 2]
+    nodeTwo = TreeNode(2)
+    root  = TreeNode(1, nodeTwo, None)
     flatten(root)
 
 
