@@ -1217,7 +1217,7 @@ def connect(root: 'Node2') -> 'Node2':
     return root
 
 def flatten(root: Optional[TreeNode]) -> None:
-    print("114. Flatten Binary Tree to Linked List")
+    print("114. Flatten Binary Tree to Linked List(Medium)")
     if root is None:
         return
     cur = root
@@ -1255,13 +1255,23 @@ def flatten(root: Optional[TreeNode]) -> None:
             print("456")
     print("789")
 
-# def preorder(preord: List[int], root: TreeNode) -> None:  # root->left->right 前序
-#     if root is None:
-#         return
-#     preord.append(root.val)
-#     preorder(preord, root.left)
-#     preorder(preord, root.right)
+def hasPathSum(root: Optional[TreeNode], targetSum: int) -> bool:
+    print("112. Path Sum(Easy)")
+    sum = 0
 
+    if not root:
+        return 0
+    while root:
+        sum = sum + root.val
+        if root.left:
+            sum = sum + root.left.val
+            root = root.left
+        if root.right:
+            sum = sum + root.right.val
+            root = root.right
+
+
+    return False
 
 if __name__ == '__main__':
     '''
@@ -1638,10 +1648,25 @@ if __name__ == '__main__':
     # nodeFour = TreeNode(4,nodeThree,None)
     # root  = TreeNode(1, None, nodeFour)
 
-    # root = [1, 2]
-    nodeTwo = TreeNode(2)
-    root  = TreeNode(1, nodeTwo, None)
-    flatten(root)
+    # # root = [1, 2]
+    # nodeTwo = TreeNode(2)
+    # root  = TreeNode(1, nodeTwo, None)
+    # flatten(root)
+
+    # 112. Path Sum(Easy)
+    # root = [5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1],
+    targetSum = 22
+    node1 = TreeNode(1)
+    node13 = TreeNode(13)
+    node7 = TreeNode(7)
+    node2 = TreeNode(2)
+    node11 = TreeNode(11,node7,node2)
+    node4_1 = TreeNode(4,node11,None)
+    node4_2 = TreeNode(4,None,node1)
+    node8 = TreeNode(8,node13,node4_2)
+    root = TreeNode(5,node4_1,node8)
+    hasPathSum(root,targetSum)
+
 
 
 
