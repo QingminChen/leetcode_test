@@ -1612,7 +1612,7 @@ if __name__ == '__main__':
     # root = Node2(1, nodeTwo, nodeThree)
     # connect(root)
 
-    # 114. Flatten Binary Tree to Linked List()
+    # 114. Flatten Binary Tree to Linked List(Medium)
     # # root = [1, 2, 5, 3, 4, null, 6]
     # nodeFour = TreeNode(4)
     # nodeSix = TreeNode(6)
