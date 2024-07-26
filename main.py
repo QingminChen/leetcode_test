@@ -1217,6 +1217,7 @@ def connect(root: 'Node2') -> 'Node2':
     return root
 
 def flatten(root: Optional[TreeNode]) -> None:
+    print("114. Flatten Binary Tree to Linked List")
     if root is None:
         return
     cur = root
@@ -1252,21 +1253,6 @@ def flatten(root: Optional[TreeNode]) -> None:
             cur = latest_right
             cur = pre_order(cur)
             print("456")
-
-    # if cur.left:
-    #   while cur.left:
-    #     cur = pre_order(cur)
-    #     print("123")
-    # elif cur.right:
-    #     q.append(cur.right)
-    # else:
-    #     return
-    # while q :
-    #     latest_right = q.pop()
-    #     cur.right = latest_right
-    #     cur = latest_right
-    #     cur = pre_order(cur)
-    #     print("456")
     print("789")
 
 # def preorder(preord: List[int], root: TreeNode) -> None:  # root->left->right 前序
@@ -1626,7 +1612,7 @@ if __name__ == '__main__':
     # root = Node2(1, nodeTwo, nodeThree)
     # connect(root)
 
-    # 114. Flatten Binary Tree to Linked List
+    # 114. Flatten Binary Tree to Linked List()
     # # root = [1, 2, 5, 3, 4, null, 6]
     # nodeFour = TreeNode(4)
     # nodeSix = TreeNode(6)
